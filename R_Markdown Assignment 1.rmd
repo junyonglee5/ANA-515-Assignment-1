@@ -1,0 +1,49 @@
+---
+title: "ANA 515 Assignment 1"
+author: Jun Yong Lee
+date: 9/4/2022
+output: 
+  html_document:
+    theme:
+      bootswatch: darkly
+---
+
+```{r , echo = FALSE}
+#downloaded tidyverse, knitr, and bslib from Tools menu
+```
+
+```{r , include = FALSE}
+url <- "https://raw.githubusercontent.com/fivethirtyeight/guns-data/master/full_data.csv"
+gun_deaths <- read.csv(url)
+```
+
+```{r , include = FALSE}
+library(tidyverse)
+library(knitr)
+library(bslib)
+youth <- filter(gun_deaths, age <= 65)
+```
+
+```{r , include = FALSE}
+summary(youth)
+```
+
+We have data about `r nrow(gun_deaths)` individuals killed by guns. 
+Only `r nrow(gun_deaths) - nrow(youth)` are older than 65.
+The distribution of the remainder is shown below:
+
+```{r youth-dist, echo = FALSE}
+youth %>%
+  ggplot(aes(age))+
+  geom_freqpoly(binwidth=1)
+```
+
+```{r race-dist, echo=FALSE}
+youth %>%
+  ggplot(aes(fct_infreq(race)%>%fct_rev()))+
+  geom_bar()+coord_flip()+
+  labs(x="Victim race")
+```
+
+
+  
